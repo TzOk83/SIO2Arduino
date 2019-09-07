@@ -21,6 +21,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include "config.h"
+#define USE_SD_VOLUME
 #include <SdFat.h>
 #include <SdFatUtil.h>
 #include <SdVolume.h>
@@ -30,6 +31,17 @@
 #ifdef LCD_DISPLAY
 #include <LiquidCrystal.h>
 #endif
+
+/**
+ * Function declarations
+ */
+DriveStatus* getDeviceStatus(int deviceId);
+SectorDataInfo* readSector(int deviceId, unsigned long sector, byte *data);
+boolean writeSector(int deviceId, unsigned long sector, byte* data, unsigned long length);
+boolean format(int deviceId, int density);
+int getFileList(int startIndex, int count, FileEntry *entries);
+void mountFileIndex(int deviceId, int ix);
+void changeDirectory(int ix);
 
 /**
  * Global variables
@@ -164,7 +176,8 @@ boolean format(int deviceId, int density) {
   char name[13];
   
   // get current filename
-  file.getName(name, 13);
+  //file.getName(name, 13);
+  file.getFilename(name);
 
   // close and delete the current file
   file.close();

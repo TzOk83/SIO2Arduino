@@ -388,7 +388,8 @@ boolean DiskImage::loadFile(SdFile *file) {
   }  
 #endif
 
-  file->getName((char*)&filename, 13);
+  //file->getName((char*)&filename, 13);
+  file->getFilename((char*)&filename);
   int len = strlen(filename);
   char *extension = filename + len - 4;
 
